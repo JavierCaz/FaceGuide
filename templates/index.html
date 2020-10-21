@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOA</title>
+    <style>
+      .video-wrap{
+        position: relative;
+      }
+
+      .guideline {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 640px;
+        height: 460px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Captura de Rostro</h1>
+    <div class="video-wrap">
+      <video id="video" playsinline autoplay></video>
+      <img class="guideline" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_513928.png&f=1&nofb=1" />
+    </div>
+
+    <canvas id="canvas" width="640" height="480"></canvas>
+
+    <div class="controllers">
+      <button id="snap">Capture</button>
+      <button id="dwn">Download</button>
+    </div>
+
+    <script>
+
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const snap = document.getElementById("snap");
+      const dwn = document.getElementById("dwn");
+      const errorMsgElement = document.getElementById("span#errorMessage");
+
+      const constraints = {
+        audio: false,
+        video: {
+          width: 1280,
+          height: 720,
+        },
+      };
+
+      async function init() {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+          handleSucces(stream);
+        } catch (e) {
+          errorMsgElement.innerHTML = `navigator.getUserMedia.error:${e.toString()}`;
+        }
+      }
+
+      function handleSucces(stream) {
+        window.stream = stream;
+        video.srcObject = stream;
+      }
+
+      init();
+
+      var context = canvas.getContext("2d");
+      snap.addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 640, 480);
+      });
+
+      dwn.addEventListener("click", function () {
+        const a = document.createElement("a")
+        document.body.appendChild(a)
+        a.href = canvas.toDataURL("image/jpeg")
+        a.download = "image.jpeg"
+        a.click()
+        document.body.removeChild(a)
+      });
+
+    </script>
+  </body>
+</html>
