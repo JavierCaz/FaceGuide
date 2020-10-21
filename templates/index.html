@@ -3,34 +3,95 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SOA</title>
+    <title>SOA FaceGuide</title>
+
+    <!-- CSS -->
+
     <style>
+      .main-container{
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      h1{
+        color: grey;
+      }
+
       .video-wrap{
         position: relative;
+        border: 2px solid cornflowerblue;
+        border-radius: 5px;
+        margin-right: 15px;
       }
 
       .guideline {
         position: absolute;
-        bottom: 0;
+        bottom: -1px;
         left: 0;
         width: 640px;
         height: 460px;
       }
+
+      .image-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .controllers{
+        display: flex;
+        justify-content: space-around;
+        width: 400px;
+        margin-top: 25px;
+      }
+
+      .controllers > button{
+        color: cornflowerblue;
+        width: 100px;
+        height: 30px;
+        border: 2px solid cornflowerblue;
+        border-radius: 5px;
+      }
+
+      canvas{
+        border: 2px solid cornflowerblue;
+        border-radius: 5px;
+      }
     </style>
+
+    <!-- CSS -->
+
   </head>
   <body>
-    <h1>Captura de Rostro</h1>
-    <div class="video-wrap">
-      <video id="video" playsinline autoplay></video>
-      <img class="guideline" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_513928.png&f=1&nofb=1" />
+
+    <!-- HTML -->
+
+    <div class="main-container">
+
+      <h1>Captura de Rostro</h1>
+
+      <div class="image-container">
+        <div class="video-wrap">
+          <video id="video" playsinline autoplay></video>
+          <img class="guideline" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_513928.png&f=1&nofb=1" />
+        </div>
+
+        <canvas id="canvas" width="640" height="480"></canvas>
+      </div>
+
+      <div class="controllers">
+        <button id="snap">Capturar</button>
+        <button id="dwn">Descargar</button>
+      </div>
+
     </div>
 
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <!-- HTML -->
 
-    <div class="controllers">
-      <button id="snap">Capture</button>
-      <button id="dwn">Download</button>
-    </div>
+    <!-- JavaScript -->
 
     <script>
 
@@ -79,5 +140,8 @@
       });
 
     </script>
+
+    <!-- JavaScript -->
+
   </body>
 </html>
