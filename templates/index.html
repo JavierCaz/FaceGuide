@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SOA FaceGuide</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 
     <!-- CSS -->
 
@@ -41,6 +42,13 @@
         justify-content: space-around;
       }
 
+      .table-controllers{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-top: 20px;
+      }
+
       .controllers{
         display: flex;
         justify-content: space-around;
@@ -48,7 +56,7 @@
         margin-top: 25px;
       }
 
-      .controllers > button{
+      .controllers .btn{
         color: cornflowerblue;
         width: 100px;
         height: 30px;
@@ -82,10 +90,28 @@
         <canvas id="canvas" width="640" height="480"></canvas>
       </div>
 
-      <div class="controllers">
-        <button id="snap">Capturar</button>
-        <button id="dwn">Descargar</button>
-      </div>
+      <div class="table-controllers">
+        <div class="controllers">
+          <button id="snap" class="btn">Capturar</button>
+          <button id="dwn" class="btn">Guardar</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+                <th>Imagenes Guardadas</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for photo in photos %}
+              <tr>
+                  <td>{{ photo.name }}.jpeg</td>
+              </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
     </div>
 
@@ -131,12 +157,29 @@
       });
 
       dwn.addEventListener("click", function () {
-        const a = document.createElement("a")
-        document.body.appendChild(a)
-        a.href = canvas.toDataURL("image/jpeg")
-        a.download = "image.jpeg"
-        a.click()
-        document.body.removeChild(a)
+        var name = prompt("Please enter your photo name", "Image");
+
+        $.ajax({
+          url: '/new',
+          data: {
+             name : name
+          },
+          type: 'POST',
+          success: function(response){
+            const a = document.createElement("a")
+            document.body.appendChild(a)
+            a.href = canvas.toDataURL("image/jpeg")
+            a.download = name+".jpeg"
+            a.click()
+            document.body.removeChild(a)
+
+            console.log(response);
+            location.reload();
+          },
+          error: function(error){
+            console.log(error);
+          }
+        });
       });
 
     </script>
